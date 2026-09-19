@@ -198,6 +198,9 @@ main, footer { margin-left: 240px; }
 .button:hover { color: var(--accent-dark); border-color: var(--accent-dark); }
 .button.primary { padding: 9px 15px; color: #fff; background: var(--accent); border: 1px solid var(--accent); }
 .button.primary:hover { background: var(--accent-dark); }
+.project-links { margin: 16px 0 28px; }
+.github-link { color: #30363d; border-color: #aeb6c0; }
+.github-icon { width: 18px; height: 18px; flex: 0 0 auto; fill: currentColor; }
 
 .teaser-figure { margin: 0; }
 .teaser-grid {
