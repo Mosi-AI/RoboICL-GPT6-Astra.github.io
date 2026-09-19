@@ -6,19 +6,19 @@
   <meta name="description" content="Embodied in-context learning with GPT-6 Astra: execution-grounded demonstrations, bounded anchored LIVE memory, and direct closed-loop bimanual control.">
   <meta name="author" content="Fangcheng Liu, Yeqing Shen, Anda Cheng, Weishi Mi, Chao Tang, Tingguang Li, Yong-Lu Li, Yehui Tang">
   <meta name="theme-color" content="#ffffff">
-  <link rel="canonical" href="https://mosi-ai.github.io/RoboICL-GPT6.github.io/">
+  <link rel="canonical" href="https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://mosi-ai.github.io/RoboICL-GPT6.github.io/">
+  <meta property="og:url" content="https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/">
   <meta property="og:title" content="Embodied In-Context Learning for GPT-6 Astra">
   <meta property="og:description" content="Multimodal Models as Few-Shot Robot Learners">
-  <meta property="og:image" content="https://mosi-ai.github.io/RoboICL-GPT6.github.io/assets/images/request-anatomy/live-current-687.jpg">
+  <meta property="og:image" content="https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/assets/images/request-anatomy/live-current-687.jpg">
   <meta property="og:image:width" content="1920">
   <meta property="og:image:height" content="480">
   <meta property="og:image:alt" content="Three-view RGB observation from a RoboICL control rollout">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Embodied In-Context Learning for GPT-6 Astra">
   <meta name="twitter:description" content="Multimodal Models as Few-Shot Robot Learners">
-  <meta name="twitter:image" content="https://mosi-ai.github.io/RoboICL-GPT6.github.io/assets/images/request-anatomy/live-current-687.jpg">
+  <meta name="twitter:image" content="https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/assets/images/request-anatomy/live-current-687.jpg">
   <title>Embodied In-Context Learning for GPT-6 Astra</title>
   <link rel="stylesheet" href="styles.css?v=20260919-mobile-v2">
   <script type="application/ld+json">
@@ -29,8 +29,8 @@
       "alternativeHeadline": "Multimodal Models as Few-Shot Robot Learners",
       "datePublished": "2026-09-18",
       "dateModified": "2026-09-18",
-      "url": "https://mosi-ai.github.io/RoboICL-GPT6.github.io/",
-      "image": "https://mosi-ai.github.io/RoboICL-GPT6.github.io/assets/images/request-anatomy/live-current-687.jpg",
+      "url": "https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/",
+      "image": "https://mosi-ai.github.io/RoboICL-GPT6-Astra.github.io/assets/images/request-anatomy/live-current-687.jpg",
       "author": [
         {"@type": "Person", "name": "Fangcheng Liu"},
         {"@type": "Person", "name": "Yeqing Shen"},
@@ -95,8 +95,8 @@
       </div>
     <section id="summary" class="abstract-section">
       <div class="abstract-copy">
-        <p>GPT-6 Astra achieves excellent zero-shot performance across various domains, yet remains unreliable on certain complex bimanual tasks. In this report, We study whether an general-purpose multimodal model can adapt at inference time from executable demonstrations. RoboICL places GPT-6 Astra inside a deterministic control harness as the sole learned action generator: it directly predicts low-level bimanual Cartesian controls through one constrained <code>Act</code> interface.</p>
-        <p>Reference trajectories and deployment interactions share one execution-grounded grammar: observation &rarr; <code>Act</code> call &rarr; execution feedback &rarr; next observation. Anchored LIVE memory retains selected full-resolution interaction chunks and marks omitted spans explicitly, while reward values, success labels, evaluation metric, and layout metadata remain outside the action-generation request. In the controlled five-layout shot comparison, three demonstrations raise mean task score from 0.34 to 0.88 for <em>Put bottles in a bin</em> and from 0.04 to 0.82 for <em>Build Tower</em>. In a separate 50-layout <em>Build Tower</em> sweep, the RoboICL 3-shot estimate ranks 4-th at 59.80, while the GPT-6 Astra Direct reference ranks 20-th at 16.40. These results suggest that structured execution demonstration can provide task-specific context for stronger direct closed-loop adaptation.</p>
+        <p>GPT-6 Astra achieves excellent zero-shot performance across various domains, yet remains unreliable on certain complex bimanual tasks. In this report, We study whether a general-purpose multimodal model can adapt at inference time from executable demonstrations. RoboICL places GPT-6 Astra inside a deterministic control harness as the sole learned action generator: it directly predicts low-level bimanual Cartesian controls through one constrained <code>Act</code> interface.</p>
+        <p>Reference trajectories and deployment interactions share one execution-grounded grammar: observation &rarr; <code>Act</code> call &rarr; execution feedback &rarr; next observation. Anchored LIVE memory retains selected full-resolution interaction chunks and marks omitted spans explicitly, while reward values, success labels, evaluation metric, and layout metadata remain outside the action-generation request. In the controlled five-layout shot comparison, three demonstrations raise mean task score from 0.34 to 0.88 for <em>Put bottles in a bin</em> and from 0.04 to 0.82 for <em>Build Tower</em>. In a separate 50-layout <em>Build Tower</em> sweep, the RoboICL 3-shot estimate ranks 4th at 59.80, while the GPT-6 Astra Direct reference ranks 20th at 16.40. These results suggest that structured execution demonstration can provide task-specific context for stronger direct closed-loop adaptation.</p>
       </div>
     </section>
 
@@ -345,7 +345,7 @@
       <div class="report-width">
         <div class="section-heading split-heading">
           <h2>3.1 Quantitative results</h2>
-          <p><b>Experimental setup.</b> We align evaluation cases with the public <a href="https://anonymous-report-421.github.io/public-website/?lang=en&amp;view=1" target="_blank" rel="noreferrer">GPT-as-Policy report</a> and its machine-readable <code>source.json</code>. With <code>eval_seed=0</code>, we evaluate five deterministic settings for each of nine tasks, totaling 45 rollouts. Six tasks use standard layouts 0&ndash;4; <em>Arrange the largest number</em>, <em>Pack objects into a box</em>, and <em>Fold clothes</em> use two standard and three random layouts. We exclude <em>Classify Objects by Language</em> because its official TRAIN split has no task-specific reference trajectory. Each rollout retains the task&rsquo;s native horizon and evaluator, recording both score and complete-task success.</p>
+          <p><b>Experimental setup.</b> We align evaluation cases with the public <a href="https://anonymous-report-421.github.io/public-website/?lang=en&amp;view=1" target="_blank" rel="noreferrer">GPT-as-Policy report</a> and its machine-readable <code>data.json</code>. With <code>eval_seed=0</code>, we evaluate five deterministic settings for each of nine tasks, totaling 45 rollouts. Six tasks use standard layouts 0&ndash;4; <em>Arrange the largest number</em>, <em>Pack objects into a box</em>, and <em>Fold clothes</em> use two standard and three random layouts. We exclude <em>Classify Objects by Language</em> because its official TRAIN split has no task-specific reference trajectory. Each rollout retains the task&rsquo;s native horizon and evaluator, recording both score and complete-task success.</p>
           <p>For the 3-shot condition, each task uses three fixed trajectories from the official TRAIN split, selected before evaluation without access to test-layout results. Each trajectory contributes five non-overlapping 15-step chunks spanning distinct manipulation phases, with the initial observation included and the final chunk aligned to the trajectory endpoint. No demonstration action is clipped, interpolated, or manually corrected.</p>
           <p>TRAIN and LIVE share the same left-wrist, head, and right-wrist RGB representation and the same observation&ndash;<code>Act</code>&ndash;feedback grammar. Three shots provide thirty fixed three-view observations. At each LIVE decision, GPT-6 Astra proposes a 15-step end-effector-delta matrix with <code>xhigh</code> reasoning; the harness validates and executes its admissible prefix. Scoring uses the native RoboDojo evaluator and task-specific step budget.</p>
           <p><b>Results.</b> Table 1 provides cross-protocol task-level context rather than a causal comparison. RoboICL scores higher than the reported GPT-6 Astra Direct results on six of nine tasks, lower on two, and ties on one, with an unweighted mean of 57.33 versus 36.11. Figure 1 is the more appropriate evidence for isolating the effect of demonstrations because it uses a fixed five-layout setting. In the separate 50-layout <em>Build Tower</em> sweep in Figure 2, RoboICL&rsquo;s 3-shot estimate ranks fourth at 59.80, while GPT-6 Astra Direct ranks twentieth at 16.40.</p>
@@ -463,7 +463,7 @@
           <div class="case-copy">
             <span class="case-index">02 · Within-rollout strategy adaptation</span>
             <h3>Fill Pen Holder: the model recombines demonstrated hand roles within a single rollout.</h3>
-            <p>The three in-context demonstrations present two successful hand-role assignments. Episode 0 uses the left hand to hold the pen holder and the right hand to insert pens, whereas episodes 96 and 99 use the opposite assignment. The first two rows show one example of each.</p>
+            <p>The three in-context demonstrations present two successful hand-role assignments. Episode 0 uses the left hand to hold the pen holder and the right hand to insert pens, whereas episodes 96 and 99 use the opposite assignment. The first two videos show one example of each.</p>
             <p>In the rollout, the model begins with the second assignment: the right hand holds the holder while the left hand inserts pens. Near the end, it brings the holder to the left gripper, establishes a new grasp, and releases the right gripper, completing a mid-air handoff. The demonstrations show the two assignments separately but do not include this transition. The rollout therefore recombines demonstrated behaviors rather than reproducing either strategy, while keeping the holder upright and the inserted pens contained. The run was interrupted by a policy-service failure after step 802, before an official outcome was recorded. This example therefore provides qualitative evidence of within-rollout hand-role adaptation.</p>
           </div>
         </article>
