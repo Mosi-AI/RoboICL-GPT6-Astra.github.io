@@ -1,0 +1,82 @@
+{
+  "schema_version": "roboicl.public-trace.v1",
+  "notice": "Sanitized structural specimen. Provider reasoning, encrypted content, request identifiers, credentials, base64 payloads, and absolute paths are intentionally excluded.",
+  "source": {
+    "task": "put_bottles_into_dustbin",
+    "shots": 2,
+    "seed": 0,
+    "variant": "standard",
+    "layout": 3,
+    "run_code_commit": "81c7a19",
+    "selected_model_call": 49,
+    "observation_step": 687,
+    "final_score": 0.4,
+    "success": false
+  },
+  "request_summary": {
+    "serialized_size_mb": 7.6,
+    "input_items": 81,
+    "triptych_images": 30,
+    "training_triptychs": 20,
+    "live_triptychs": 10,
+    "last_call_cached_input_tokens": 66889,
+    "last_call_input_tokens": 72522,
+    "last_call_cached_fraction": 0.9223,
+    "episode_cached_fraction": 0.8915
+  },
+  "observation_contract": {
+    "triptych_order": ["left_wrist_rgb", "head_rgb", "right_wrist_rgb"],
+    "triptych_resolution": [1920, 480],
+    "tile_resolution": [640, 480],
+    "calibrated_view": "head_rgb",
+    "state": ["joint_state", "gripper_command_state", "end_effector_poses"]
+  },
+  "action_contract": {
+    "tool": "act",
+    "shape": [15, 14],
+    "semantics": "world-frame dual-arm end-effector deltas",
+    "control_rate_hz": 25,
+    "execution": "controller executes the safe prefix and returns a receipt"
+  },
+  "training_context": {
+    "episodes": 2,
+    "chunks_per_episode": 5,
+    "receipt_provenance": "Recorded trajectory execution is serialized into the same receipt schema used for online controller feedback.",
+    "chunk_grammar": [
+      "start_observation",
+      "act_tool_call",
+      "execution_receipt",
+      "result_observation"
+    ],
+    "episode_1_intervals": [[0, 15], [25, 40], [67, 82], [136, 151], [346, 361]],
+    "episode_2_intervals": [[0, 15], [77, 92], [146, 161], [229, 244], [357, 372]],
+    "unselected_intervals": "explicit_trajectory_gap"
+  },
+  "live_context": {
+    "configured_anchor_targets": [0, 140, 280, 420],
+    "retained_chunk_starts_in_request": [0, 133, 268, 418],
+    "rolling_latest_interval": [672, 687],
+    "latest_observation_step": 687,
+    "fixed_anchor_chunks": 4,
+    "rolling_chunks": 1,
+    "archived_chunks_total": 47,
+    "merged_gap_summaries": 4,
+    "cache_frontiers": 12,
+    "deepest_stable_observation": 433
+  },
+  "final_execution": {
+    "predicted_steps": 15,
+    "executed_steps": 13,
+    "terminal_step": 700
+  },
+  "public_image_assets": [
+    "images/request-anatomy/train-episode-1-start.jpg",
+    "images/request-anatomy/train-episode-1-outcome.jpg",
+    "images/request-anatomy/live-step-000.jpg",
+    "images/request-anatomy/live-anchor-133.jpg",
+    "images/request-anatomy/live-anchor-268.jpg",
+    "images/request-anatomy/live-anchor-418.jpg",
+    "images/request-anatomy/live-latest-672.jpg",
+    "images/request-anatomy/live-current-687.jpg"
+  ]
+}
