@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Multimodal Models as Few-Shot Robot Learners">
   <meta name="twitter:image" content="https://mosi-ai.github.io/RoboICL-GPT6.github.io/assets/images/request-anatomy/live-current-687.jpg">
   <title>Embodied In-Context Learning for GPT-6 Astra</title>
-  <link rel="stylesheet" href="styles.css?v=20260919-qualitative-policy-v15">
+  <link rel="stylesheet" href="styles.css?v=20260919-mobile-v1">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -43,7 +43,7 @@
       ]
     }
   </script>
-  <script defer src="script.js?v=20260919-qualitative-policy-v9"></script>
+  <script defer src="script.js?v=20260919-mobile-v1"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to main content</a>
@@ -153,9 +153,10 @@
       <div class="bt50-card">
           <h1>Build Tower score across 50 layouts</h1>
           <p class="bt50-sub">Mean RoboDojo Build Tower task score on a 0–100 display scale (raw score × 100). Seven highest-scoring official baselines plus the RoboICL 3-shot estimate.</p>
+          <p class="bt50-mobile-hint">Scroll horizontally to inspect all methods →</p>
           <section class="bt50-chart" aria-label="Bar chart comparing Build Tower scores">
             <div class="bt50-axis"><span>100</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span></div>
-            <div class="bt50-plot"><div class="bt50-bars">
+            <div class="bt50-plot" tabindex="0" role="region" aria-label="Scrollable Build Tower method comparison"><div class="bt50-bars">
               <div class="bt50-bar-wrap"><div class="bt50-value">82.93</div><div class="bt50-bar" style="height:82.93%"></div><div class="bt50-label"><img class="bt50-logo" src="https://media.luminis-sim.com/media/shared/teams/GalaxeaVLA.png" alt="Galaxea logo"><span>GalaxeaVLA (G0.5)</span></div></div>
               <div class="bt50-bar-wrap"><div class="bt50-value">63.20</div><div class="bt50-bar" style="height:63.2%"></div><div class="bt50-label"><img class="bt50-logo" src="https://media.luminis-sim.com/media/shared/teams/spatial.png" alt="StarVLA logo"><span>StarVLA-PI_v3</span></div></div>
               <div class="bt50-bar-wrap"><div class="bt50-value">63.20</div><div class="bt50-bar" style="height:63.2%"></div><div class="bt50-label"><img class="bt50-logo" src="https://media.luminis-sim.com/media/shared/teams/thu_.png" alt="X-VLA logo"><span>X-VLA</span></div></div>
@@ -344,7 +345,9 @@
           <p><b>Results.</b> Table 1 provides cross-protocol task-level context rather than a causal comparison. RoboICL scores higher than the reported GPT-6 Astra Direct results on six of nine tasks, lower on two, and ties on one, with an unweighted mean of 57.33 versus 36.11. Figure 1 is the more appropriate evidence for isolating the effect of demonstrations because it uses a fixed five-layout setting. In the separate 50-layout <em>Build Tower</em> sweep in Figure 2, RoboICL&rsquo;s 3-shot estimate ranks fourth at 59.80, while GPT-6 Astra Direct ranks twentieth at 16.40.</p>
         </div>
         <figure class="benchmark-table-figure">
-          <table class="benchmark-table">
+          <p class="table-mobile-hint">Scroll horizontally to compare all methods →</p>
+          <div class="benchmark-table-scroll" tabindex="0" role="region" aria-label="Scrollable task comparison table">
+            <table class="benchmark-table">
             <thead>
               <tr>
                 <th scope="col">Task</th>
@@ -370,7 +373,8 @@
             <tfoot>
               <tr><th scope="row">Overall</th><td>42.39</td><td>36.22</td><td>27.08</td><td><strong>65.33</strong></td><td class="focus-column baseline">36.11</td><td class="focus-column ours"><span class="runner-up">57.33</span></td></tr>
             </tfoot>
-          </table>
+            </table>
+          </div>
           <figcaption><b>Table 1.</b> Mean score across nine manipulation tasks. Bold indicates the highest score in a row; underline indicates the second-highest score. Overall is an unweighted mean across tasks.</figcaption>
         </figure>
       </div>

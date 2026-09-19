@@ -93,16 +93,29 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const compactViewport = matchMedia('(max-width: 820px)');
 const saveData = Boolean(navigator.connection?.saveData);
 const teaserVideos = [...document.querySelectorAll('[data-teaser-video]')];
+const previewVideos = teaserVideos.filter(video => !video.matches('[data-rollout-video]'));
 let teaserObserver;
+
+function requiresManualTeaserPlayback() {
+  return reducedMotion.matches || compactViewport.matches || saveData;
+}
+
+function syncPreviewVideoControls() {
+  const manualPlayback = requiresManualTeaserPlayback();
+  previewVideos.forEach(video => {
+    video.controls = manualPlayback;
+    if (manualPlayback) video.pause();
+  });
+}
 
 function playVisibleTeaser(video) {
   if (video.dataset.userPaused === 'true'
-    || reducedMotion.matches
-    || compactViewport.matches
-    || saveData
     || document.hidden
     || video.dataset.inView !== 'true') {
     video.pause();
+    return;
+  }
+  if (requiresManualTeaserPlayback()) {
     return;
   }
   video.play().catch(() => {
@@ -125,8 +138,14 @@ if ('IntersectionObserver' in window) {
   });
 }
 
-reducedMotion.addEventListener?.('change', () => teaserVideos.forEach(playVisibleTeaser));
-compactViewport.addEventListener?.('change', () => teaserVideos.forEach(playVisibleTeaser));
+function refreshTeaserPlayback() {
+  syncPreviewVideoControls();
+  teaserVideos.forEach(playVisibleTeaser);
+}
+
+syncPreviewVideoControls();
+reducedMotion.addEventListener?.('change', refreshTeaserPlayback);
+compactViewport.addEventListener?.('change', refreshTeaserPlayback);
 document.addEventListener('visibilitychange', () => teaserVideos.forEach(playVisibleTeaser));
 
 const rolloutExamples = [
