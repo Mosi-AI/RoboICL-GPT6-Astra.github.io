@@ -194,6 +194,8 @@ main { margin-left: 240px; }
 }
 .button:hover { color: var(--accent-dark); border-color: var(--accent-dark); }
 .project-links { margin: 16px 0 28px; }
+.arxiv-badge { display: inline-flex; align-items: center; }
+.arxiv-badge img { display: block; height: 22px; }
 .github-link { color: #30363d; border-color: #aeb6c0; }
 .github-icon { width: 18px; height: 18px; flex: 0 0 auto; fill: currentColor; }
 .abstract-section {
@@ -210,6 +212,29 @@ main { margin-left: 240px; }
 .section-kicker { color: var(--accent); font-size: 14px; font-weight: 650; }
 .abstract-copy p { margin: 0 0 17px; font-family: var(--serif); font-size: 17px; line-height: 1.7; text-align: justify; text-justify: inter-word; }
 .abstract-copy p:last-child { margin-bottom: 0; }
+
+.citation-section { padding-top: 62px; padding-bottom: 78px; scroll-margin-top: 28px; }
+.citation-heading { width: min(100%, 1080px); margin: 0 auto 22px; }
+.citation-code {
+  width: min(100%, 1080px);
+  max-width: none;
+  margin: 0 auto;
+  padding: 24px 26px;
+  box-sizing: border-box;
+  overflow-x: auto;
+  color: #243044;
+  background: #f6f8fa;
+  border: 1px solid #d8dee7;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 #ffffffb8;
+  text-align: left;
+}
+.citation-code code {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+}
 
 .section { padding-block: 76px; scroll-margin-top: 28px; }
 .section-heading { margin: 12px 0 36px; }
@@ -372,6 +397,9 @@ table { border-collapse: collapse; }
   .author-note { text-align: left; }
   .hero h1 { margin-left: 0; margin-right: 0; }
   .abstract-section { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
+  .citation-section { padding-top: 46px; padding-bottom: 58px; }
+  .citation-code { padding: 18px; border-radius: 10px; }
+  .citation-code code { font-size: 11px; }
 }
 @media screen {
   .section { padding-block: 34px; border-top: 0; }
