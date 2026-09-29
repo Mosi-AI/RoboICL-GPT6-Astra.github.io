@@ -42,52 +42,97 @@ const COUNTER_KEYS = {
 };
 const counterFormatter = new Intl.NumberFormat('en-US');
 const counterRequestIds = new WeakMap();
+const counterStoragePrefix = 'roboicl-counter:';
 const isPublishedSite = location.hostname === 'mosi-ai.github.io';
 const pageViewCount = document.querySelector('[data-page-view-count]');
 const layoutInteractionCount = document.querySelector('[data-layout-interaction-count]');
 let layoutCounterQueue = Promise.resolve();
+let lastCounterRefresh = 0;
 
-function renderCounter(element, value) {
+function displayedCounter(element) {
+  return Number(String(element?.textContent || '').replace(/,/g, '')) || 0;
+}
+
+function storedCounter(key) {
+  try {
+    return Number(localStorage.getItem(`${counterStoragePrefix}${key}`)) || 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+function renderCounter(element, value, key) {
   if (!element) return;
-  element.textContent = counterFormatter.format(Math.max(0, Number(value) || 0));
+  const normalized = Math.max(0, Number(value) || 0);
+  element.textContent = counterFormatter.format(normalized);
   element.closest('.engagement-counter')?.classList.remove('is-unavailable');
+  element.removeAttribute('title');
+  if (!key) return;
+  try {
+    localStorage.setItem(`${counterStoragePrefix}${key}`, String(normalized));
+  } catch (_) {}
 }
 
 async function requestCounter(element, operation, key) {
   if (!element) return;
   const requestId = (counterRequestIds.get(element) || 0) + 1;
   counterRequestIds.set(element, requestId);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 7000);
   try {
     const response = await fetch(`${COUNTER_API}/${operation}/${COUNTER_NAMESPACE}/${key}`, {
       cache: 'no-store',
-      mode: 'cors'
+      mode: 'cors',
+      signal: controller.signal
     });
     if (response.status === 404 && operation === 'get') {
-      if (counterRequestIds.get(element) === requestId) renderCounter(element, 0);
+      if (counterRequestIds.get(element) === requestId) renderCounter(element, displayedCounter(element), key);
       return;
     }
     if (!response.ok) throw new Error(`Counter request failed: ${response.status}`);
     const payload = await response.json();
-    if (counterRequestIds.get(element) === requestId) renderCounter(element, payload.value);
+    if (counterRequestIds.get(element) === requestId) {
+      renderCounter(element, Math.max(displayedCounter(element), Number(payload.value) || 0), key);
+    }
   } catch (error) {
     if (counterRequestIds.get(element) !== requestId) return;
     element.closest('.engagement-counter')?.classList.add('is-unavailable');
     element.title = 'Counter temporarily unavailable';
     console.warn('Engagement counter could not be updated.', error);
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
 function recordLayoutInteraction() {
+  renderCounter(layoutInteractionCount, displayedCounter(layoutInteractionCount) + 1, COUNTER_KEYS.layoutSwitches);
   if (isPublishedSite) {
     layoutCounterQueue = layoutCounterQueue.then(() => requestCounter(layoutInteractionCount, 'hit', COUNTER_KEYS.layoutSwitches));
-    return;
   }
-  const current = Number(String(layoutInteractionCount?.textContent || '').replaceAll(',', '')) || 0;
-  renderCounter(layoutInteractionCount, current + 1);
 }
 
-requestCounter(pageViewCount, isPublishedSite ? 'hit' : 'get', COUNTER_KEYS.pageViews);
+function refreshCounters(force = false) {
+  const now = Date.now();
+  if (!force && now - lastCounterRefresh < 5000) return;
+  lastCounterRefresh = now;
+  requestCounter(pageViewCount, 'get', COUNTER_KEYS.pageViews);
+  requestCounter(layoutInteractionCount, 'get', COUNTER_KEYS.layoutSwitches);
+}
+
+renderCounter(pageViewCount, storedCounter(COUNTER_KEYS.pageViews), COUNTER_KEYS.pageViews);
+renderCounter(layoutInteractionCount, storedCounter(COUNTER_KEYS.layoutSwitches), COUNTER_KEYS.layoutSwitches);
+if (isPublishedSite) {
+  renderCounter(pageViewCount, displayedCounter(pageViewCount) + 1, COUNTER_KEYS.pageViews);
+  requestCounter(pageViewCount, 'hit', COUNTER_KEYS.pageViews);
+} else {
+  requestCounter(pageViewCount, 'get', COUNTER_KEYS.pageViews);
+}
 requestCounter(layoutInteractionCount, 'get', COUNTER_KEYS.layoutSwitches);
+setTimeout(() => refreshCounters(true), 3500);
+addEventListener('focus', () => refreshCounters());
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') refreshCounters();
+});
 
 const CATEGORIES = ['Open', 'Memory', 'Precision', 'Long-Horizon'];
 const MODELS = [
