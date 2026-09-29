@@ -215,10 +215,18 @@ main { margin-left: 240px; }
 
 .citation-section { padding-top: 62px; padding-bottom: 78px; scroll-margin-top: 28px; }
 .citation-heading { width: min(100%, 1080px); margin: 0 auto 22px; }
-.citation-code {
+.citation-content {
   width: min(100%, 1080px);
-  max-width: none;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 18px;
+  align-items: stretch;
+}
+.citation-code {
+  width: 100%;
+  max-width: none;
+  margin: 0;
   padding: 24px 26px;
   box-sizing: border-box;
   overflow-x: auto;
@@ -234,6 +242,17 @@ main { margin-left: 240px; }
   font-size: 13px;
   line-height: 1.7;
   white-space: pre;
+}
+.citation-wechat {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  border: 1px solid #d8dee7;
+  border-radius: 12px;
+  box-sizing: border-box;
+  background: #fff;
 }
 
 .section { padding-block: 76px; scroll-margin-top: 28px; }
@@ -398,8 +417,10 @@ table { border-collapse: collapse; }
   .hero h1 { margin-left: 0; margin-right: 0; }
   .abstract-section { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
   .citation-section { padding-top: 46px; padding-bottom: 58px; }
+  .citation-content { grid-template-columns: 1fr; gap: 14px; }
   .citation-code { padding: 18px; border-radius: 10px; }
   .citation-code code { font-size: 11px; }
+  .citation-wechat { width: min(100%, 280px); height: auto; margin: 0 auto; border-radius: 10px; }
 }
 @media screen {
   .section { padding-block: 34px; border-top: 0; }
