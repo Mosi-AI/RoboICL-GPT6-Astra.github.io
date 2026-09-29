@@ -34,6 +34,61 @@ updatePageState();
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
+const COUNTER_API = 'https://abacus.jasoncameron.dev';
+const COUNTER_NAMESPACE = 'mosi-ai.github.io';
+const COUNTER_KEYS = {
+  pageViews: 'roboicl-gpt6-astra-page-views',
+  layoutSwitches: 'roboicl-gpt6-astra-layout-switches'
+};
+const counterFormatter = new Intl.NumberFormat('en-US');
+const counterRequestIds = new WeakMap();
+const isPublishedSite = location.hostname === 'mosi-ai.github.io';
+const pageViewCount = document.querySelector('[data-page-view-count]');
+const layoutInteractionCount = document.querySelector('[data-layout-interaction-count]');
+let layoutCounterQueue = Promise.resolve();
+
+function renderCounter(element, value) {
+  if (!element) return;
+  element.textContent = counterFormatter.format(Math.max(0, Number(value) || 0));
+  element.closest('.engagement-counter')?.classList.remove('is-unavailable');
+}
+
+async function requestCounter(element, operation, key) {
+  if (!element) return;
+  const requestId = (counterRequestIds.get(element) || 0) + 1;
+  counterRequestIds.set(element, requestId);
+  try {
+    const response = await fetch(`${COUNTER_API}/${operation}/${COUNTER_NAMESPACE}/${key}`, {
+      cache: 'no-store',
+      mode: 'cors'
+    });
+    if (response.status === 404 && operation === 'get') {
+      if (counterRequestIds.get(element) === requestId) renderCounter(element, 0);
+      return;
+    }
+    if (!response.ok) throw new Error(`Counter request failed: ${response.status}`);
+    const payload = await response.json();
+    if (counterRequestIds.get(element) === requestId) renderCounter(element, payload.value);
+  } catch (error) {
+    if (counterRequestIds.get(element) !== requestId) return;
+    element.closest('.engagement-counter')?.classList.add('is-unavailable');
+    element.title = 'Counter temporarily unavailable';
+    console.warn('Engagement counter could not be updated.', error);
+  }
+}
+
+function recordLayoutInteraction() {
+  if (isPublishedSite) {
+    layoutCounterQueue = layoutCounterQueue.then(() => requestCounter(layoutInteractionCount, 'hit', COUNTER_KEYS.layoutSwitches));
+    return;
+  }
+  const current = Number(String(layoutInteractionCount?.textContent || '').replaceAll(',', '')) || 0;
+  renderCounter(layoutInteractionCount, current + 1);
+}
+
+requestCounter(pageViewCount, isPublishedSite ? 'hit' : 'get', COUNTER_KEYS.pageViews);
+requestCounter(layoutInteractionCount, 'get', COUNTER_KEYS.layoutSwitches);
+
 const CATEGORIES = ['Open', 'Memory', 'Precision', 'Long-Horizon'];
 const MODELS = [
   { id: 'roboicl', name: 'RoboICL', short: 'RoboICL', color: '#4f9690', overall: 50.64, categories: [54.75, 70.00, 38.53, 44.11], note: 'Frozen GPT-6 Astra; zero-shot on Open and one-shot elsewhere.' },
@@ -301,6 +356,7 @@ function initializeRolloutExplorer(manifest) {
   let activeTrace = [];
   let activePolicyTurn = null;
   let traceRequest = 0;
+  let activeLayoutKey = '';
 
   const evaluatedCount = manifest.summary.fullEvaluationRolloutCount ?? manifest.summary.rolloutCount;
   const partialCount = Number(manifest.summary.partialEvaluationRolloutCount) || 0;
@@ -448,9 +504,11 @@ function initializeRolloutExplorer(manifest) {
     masterVideo.playbackRate = playbackRate;
   }
 
-  function updatePlayer(writeUrl = true) {
+  function updatePlayer(writeUrl = true, trackInteraction = false) {
     const task = currentTask();
     const layout = task?.layouts.find(item => String(item.id) === layoutSelect.value);
+    const nextLayoutKey = layout ? `${task.id}:${layout.id}` : '';
+    const layoutChanged = Boolean(nextLayoutKey) && nextLayoutKey !== activeLayoutKey;
     markTableTask(task?.id);
     taskLabel.textContent = task?.name || 'No task selected';
     policyLabel.textContent = task ? `GPT-6 Astra · recorded policy · ${task.name}` : 'GPT-6 Astra · recorded policy';
@@ -480,19 +538,21 @@ function initializeRolloutExplorer(manifest) {
         if (!userPaused) playAll();
       }, { once: true });
     }
+    activeLayoutKey = nextLayoutKey;
+    if (trackInteraction && layoutChanged) recordLayoutInteraction();
     if (writeUrl) updateUrl();
   }
 
-  function selectTask(taskId, preferredLayout) {
+  function selectTask(taskId, preferredLayout, trackInteraction = false) {
     const task = taskMap.get(taskId);
     if (!task) return;
     selectedTaskId = task.id;
     selectBenchmarkTask(task.id);
     populateLayouts(preferredLayout);
-    updatePlayer();
+    updatePlayer(true, trackInteraction);
   }
 
-  layoutSelect.addEventListener('change', () => updatePlayer());
+  layoutSelect.addEventListener('change', () => updatePlayer(true, true));
   rateButtons.forEach(button => button.addEventListener('click', () => setPlaybackRate(button.dataset.playbackRate)));
   pauseButton.addEventListener('click', () => {
     if (masterVideo.paused) playAll(true);
@@ -527,7 +587,7 @@ function initializeRolloutExplorer(manifest) {
     placeholder.querySelector('b').textContent = 'One camera view could not be loaded.';
     placeholder.querySelector('span').textContent = 'Try another layout or refresh the preview server.';
   }));
-  window.addEventListener('roboicl:selectTask', event => selectTask(event.detail.taskId));
+  window.addEventListener('roboicl:selectTask', event => selectTask(event.detail.taskId, undefined, true));
 
   const params = new URLSearchParams(location.search);
   const requestedTask = taskMap.has(params.get('task')) ? params.get('task') : 'imitate_sorting_sequence';

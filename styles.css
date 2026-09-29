@@ -558,7 +558,14 @@ table { border-collapse: collapse; }
 
 .benchmark-lab-section { margin-top: 0; padding: 44px 0 76px; background: #f3f5f8; border-bottom: 1px solid #d7dde6; }
 .benchmark-lab-width { width: min(1580px, calc(100% - 46px)); margin-inline: auto; }
-.benchmark-lab-heading { width: min(920px, 100%); margin: 0 0 30px; }
+.benchmark-lab-heading { width: 100%; margin: 0 0 30px; }
+.benchmark-lab-title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; }
+.benchmark-lab-title-row h2 { flex: 1 1 auto; }
+.engagement-counters { flex: 0 0 auto; display: flex; align-items: stretch; justify-content: flex-end; gap: 8px; }
+.engagement-counter { min-width: 126px; padding: 9px 12px 8px; display: grid; grid-template-columns: auto auto; gap: 10px; align-items: baseline; color: #657185; background: #fff; border: 1px solid #d2d9e3; border-radius: 9px; box-shadow: 0 5px 18px #26364e0a; }
+.engagement-counter span { font-size: 10px; font-weight: 650; line-height: 1.2; white-space: nowrap; }
+.engagement-counter strong { color: var(--accent-dark); font-family: var(--mono); font-size: 18px; font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; text-align: right; }
+.engagement-counter.is-unavailable strong { color: #929aa7; }
 .benchmark-lab { display: block; }
 .category-table-figure,
 .rollout-explorer { min-width: 0; margin: 0; overflow: hidden; background: #fff; border: 1px solid #c9d0da; border-radius: 12px; box-shadow: 0 14px 40px #26364e0c; }
@@ -658,6 +665,8 @@ table { border-collapse: collapse; }
   .model-inspector .inspector-bars { margin-top: 18px; }
   .ten-task-figure { padding: 17px 13px; }
   .benchmark-lab-width { width: min(100% - 28px, 900px); }
+  .benchmark-lab-title-row { align-items: flex-start; flex-direction: column; gap: 18px; }
+  .engagement-counters { width: 100%; justify-content: flex-start; }
   .benchmark-selector { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 10px; }
   .explorer-stage { overflow-x: auto; }
   .rollout-triptych { min-width: 780px; }
@@ -685,6 +694,9 @@ table { border-collapse: collapse; }
   .overview-legend { display: flex; overflow-x: auto; }
   .overview-legend button { min-width: max-content; font-size: 11px; }
   .benchmark-selector { grid-template-columns: 1fr; }
+  .engagement-counters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .engagement-counter { min-width: 0; grid-template-columns: 1fr; gap: 6px; }
+  .engagement-counter strong { text-align: left; }
   .rollout-explorer .player-readout { grid-template-columns: 1fr; }
   .rollout-explorer .player-readout > div,
   .rollout-explorer .player-readout > div:nth-child(even),
