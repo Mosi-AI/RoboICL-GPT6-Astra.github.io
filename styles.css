@@ -219,7 +219,7 @@ main { margin-left: 240px; }
   width: min(100%, 1080px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
+  grid-template-columns: minmax(0, 1fr) 394px;
   gap: 18px;
   align-items: stretch;
 }
@@ -243,7 +243,15 @@ main { margin-left: 240px; }
   line-height: 1.7;
   white-space: pre;
 }
-.citation-wechat {
+.citation-socials {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+.citation-qr {
   display: block;
   width: 100%;
   height: 100%;
@@ -406,6 +414,8 @@ table { border-collapse: collapse; }
   .report-width { width: min(100% - 44px, 960px); }
   .hero { padding-top: 50px; }
   .hero h1 { white-space: normal; }
+  .citation-content { grid-template-columns: 1fr; }
+  .citation-socials { width: min(100%, 394px); margin: 0 auto; }
 }
 
 @media screen and (max-width: 560px) {
@@ -417,10 +427,11 @@ table { border-collapse: collapse; }
   .hero h1 { margin-left: 0; margin-right: 0; }
   .abstract-section { width: 100%; max-width: none; margin-left: 0; margin-right: 0; }
   .citation-section { padding-top: 46px; padding-bottom: 58px; }
-  .citation-content { grid-template-columns: 1fr; gap: 14px; }
+  .citation-content { gap: 14px; }
   .citation-code { padding: 18px; border-radius: 10px; }
   .citation-code code { font-size: 11px; }
-  .citation-wechat { width: min(100%, 280px); height: auto; margin: 0 auto; border-radius: 10px; }
+  .citation-socials { width: 100%; gap: 10px; }
+  .citation-qr { height: auto; border-radius: 10px; }
 }
 @media screen {
   .section { padding-block: 34px; border-top: 0; }
